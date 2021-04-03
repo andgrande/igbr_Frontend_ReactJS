@@ -5,7 +5,7 @@ import ModalClassDetails from '../../components/ModalClassDetails';
 import api from '../../services/api';
 
 import { Header } from '../../components/Header';
-import { Container, Content, Classes, Class } from './styles';
+import { Container, Content, ClassList, Class } from './styles';
 
 import ClassDetailsDTO from '../../dto/IClassDetailsDTO';
 
@@ -20,10 +20,13 @@ interface ClassesItems {
   };
 }
 
-const Dashboard: React.FC = () => {
+const Classes: React.FC = () => {
   const [classes, setClasses] = useState<ClassesItems[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-  // const [modalClassDetails, setModalClassDetails] = useState<ClassesItems | null>(null);
+  const [
+    modalClassDetails,
+    setModalClassDetails,
+  ] = useState<ClassesItems | null>(null);
   const [modalDetails, setModalDetails] = useState<ClassDetailsDTO | null>(
     null,
   );
@@ -60,7 +63,7 @@ const Dashboard: React.FC = () => {
           />
         )}
         {classes && (
-          <Classes>
+          <ClassList>
             {classes.map(item => (
               <Class key={item.id} onClick={() => handleToggleModal(item.id)}>
                 <p>
@@ -80,11 +83,11 @@ const Dashboard: React.FC = () => {
                 </p>
               </Class>
             ))}
-          </Classes>
+          </ClassList>
         )}
       </Content>
     </Container>
   );
 };
 
-export { Dashboard };
+export { Classes };

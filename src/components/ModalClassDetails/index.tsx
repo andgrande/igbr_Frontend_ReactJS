@@ -40,7 +40,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
         Class <em>{classDetails.retrievedClasses.class_id}</em> Details
       </h1>
 
-      <h3>Teacher</h3>
+      <h4>Teacher</h4>
       <ClassInfo>
         <p>
           Teacher name: {classDetails.retrievedClasses.teacher.teacher_name}
@@ -50,13 +50,13 @@ const ModalAddFood: React.FC<IModalProps> = ({
         </p>
       </ClassInfo>
 
-      <h3>Students</h3>
+      <h4>Students</h4>
       <ClassInfo>
         {classDetails.retrievedClasses.classes_x_students.map(student => (
           <p>{student.student_name}</p>
         ))}
       </ClassInfo>
-      <h3>Class Dates</h3>
+      <h4>Class Dates</h4>
       {!dateInFocus
         ? classDetails.retrievedTimetable.map(timetable => (
             <Timetable

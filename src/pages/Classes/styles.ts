@@ -13,7 +13,7 @@ export const Content = styled.div`
   color: var(--light);
 `;
 
-export const Classes = styled.div`
+export const ClassList = styled.div`
   border: 0.1rem;
   border-color: #ccc;
 
@@ -44,10 +44,11 @@ export const Class = styled.button`
 
   color: var(--text-title);
 
-  transition: all 0.3s;
+  transition: all 0.1s;
 
   :hover {
     opacity: 0.7;
+    transform: scale(1.05, 1.05);
   }
 
   :focus {

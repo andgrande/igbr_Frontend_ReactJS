@@ -38,8 +38,20 @@ export const GlobalStyle = createGlobalStyle`
         font-weight: 400;
     }
 
-    h1, h2, h3, h4, h5, h6, strong {
-        font-weight: 600;
+    strong {
+      font-weight: 600;
+    }
+
+    h1, h2, h3 {
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      font-size: 2.5rem;
+    }
+
+    h4, h5, h6 {
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      font-size: 2rem;
     }
 
     button {

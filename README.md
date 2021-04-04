@@ -8,6 +8,7 @@
     [ ] Modal Class Date Details
         [ ] List students
         [ ] Should be able to update presence and homework
+        [ ] Should be able to update class status
 
 > Students
 [ ] Create student

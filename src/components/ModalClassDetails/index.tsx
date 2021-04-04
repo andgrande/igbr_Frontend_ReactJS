@@ -7,7 +7,14 @@ import Modal from '../Modal';
 // import Input from '../Input';
 // import api from '../../services/api';
 
-import { ClassInfo, Timetable } from './styles';
+import {
+  ClassInfo,
+  ModalHeader,
+  ModalHeaderButtons,
+  ReturnModalButton,
+  CloseModalButton,
+  Timetable,
+} from './styles';
 
 import ClassDetailsDTO from '../../dto/IClassDetailsDTO';
 import ClassTimetableDTO from '../../dto/IClassTimetableDTO';
@@ -26,7 +33,12 @@ const ModalAddFood: React.FC<IModalProps> = ({
   const [dateInFocus, setDateInFocus] = useState<ClassTimetableDTO | null>(
     null,
   );
-  const handleSubmit = useCallback(() => {
+
+  const handleReturnModal = useCallback(() => {
+    setDateInFocus(null);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
     setIsOpen();
   }, [setIsOpen]);
 
@@ -36,9 +48,31 @@ const ModalAddFood: React.FC<IModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <h1>
-        Class <em>{classDetails.retrievedClasses.class_id}</em> Details
-      </h1>
+      <ModalHeader>
+        <h1>
+          Class <em>{classDetails.retrievedClasses.class_id}</em> Details
+        </h1>
+
+        <ModalHeaderButtons>
+          {dateInFocus && (
+            <ReturnModalButton
+              type="button"
+              data-testid="add-food-button"
+              onClick={() => handleReturnModal()}
+            >
+              <p className="text">Return</p>
+            </ReturnModalButton>
+          )}
+
+          <CloseModalButton
+            type="button"
+            data-testid="add-food-button"
+            onClick={() => handleCloseModal()}
+          >
+            <p className="text">Close details</p>
+          </CloseModalButton>
+        </ModalHeaderButtons>
+      </ModalHeader>
 
       <h4>Teacher</h4>
       <ClassInfo>
@@ -71,14 +105,6 @@ const ModalAddFood: React.FC<IModalProps> = ({
           ))
         : // : dateInFocus.map(item => <div>{item.date}</div>)}
           console.log(dateInFocus)}
-
-      <button
-        type="button"
-        data-testid="add-food-button"
-        onClick={() => handleSubmit}
-      >
-        <p className="text">Close details</p>
-      </button>
     </Modal>
   );
 };

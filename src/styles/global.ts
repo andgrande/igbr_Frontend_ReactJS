@@ -33,6 +33,17 @@ export const GlobalStyle = createGlobalStyle`
         -webkit-font-smoothing: antialiased;
     }
 
+    ::-webkit-scrollbar {
+      // Width of vertical scroll bar
+      width: 12px;
+      // Height of horizontal scroll bar
+      height: 12px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background: #c2c9d2;
+  }
+
     body, input, textarea, button {
         font-family: 'Poppins', sans-serif;
         font-weight: 400;

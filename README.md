@@ -1,10 +1,20 @@
+# User Context
+
+> SignedIn Pages
+>
+>
+>
+>
+
 # Pages
+
+> Login
 
 > Classes
 [ ] Create class
 [x] List classes
     [ ] Should be to filter classes ("mostrando resultado para: ...")
-[ ] Modal Class Details
+[/] Modal Class Details
     [ ] Modal Class Date Details
         [ ] List students
         [ ] Should be able to update presence and homework

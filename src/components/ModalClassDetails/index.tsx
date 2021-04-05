@@ -14,15 +14,19 @@ import {
   ReturnModalButton,
   CloseModalButton,
   Timetable,
+  ClassDateSubHeader,
 } from './styles';
 
-import ClassDetailsDTO from '../../dto/IClassDetailsDTO';
-import ClassTimetableDTO from '../../dto/IClassTimetableDTO';
+import IClassDetailsDTO from '../../dto/IClassDetailsDTO';
+import {
+  ClassTimetableDTO,
+  StudentsTimetableDTO,
+} from '../../dto/IClassTimetableDTO';
 
 interface IModalProps {
   isOpen: boolean;
   setIsOpen: () => void;
-  classDetails: ClassDetailsDTO;
+  classDetails: IClassDetailsDTO;
 }
 
 const ModalAddFood: React.FC<IModalProps> = ({
@@ -33,6 +37,11 @@ const ModalAddFood: React.FC<IModalProps> = ({
   const [dateInFocus, setDateInFocus] = useState<ClassTimetableDTO | null>(
     null,
   );
+  const [studentsObjectArray, setStudentsObjectArray] = useState<
+    StudentsTimetableDTO[]
+  >([]);
+
+  // const studentsObjectArray: StudentsTimetableDTO = new Array<StudentsTimetableDTO>();
 
   const handleReturnModal = useCallback(() => {
     setDateInFocus(null);
@@ -44,6 +53,22 @@ const ModalAddFood: React.FC<IModalProps> = ({
 
   function handleDateInfocus(timetable: ClassTimetableDTO) {
     setDateInFocus(timetable);
+
+    const objectArray = Object.entries(timetable.students_presence);
+    const newObjectArray = new Array<StudentsTimetableDTO>();
+
+    objectArray.forEach(item => newObjectArray.push(item[1]));
+    setStudentsObjectArray(
+      newObjectArray.sort((a, b) => {
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        return 0;
+      }),
+    );
   }
 
   return (
@@ -91,20 +116,39 @@ const ModalAddFood: React.FC<IModalProps> = ({
         ))}
       </ClassInfo>
       <h4>Class Dates</h4>
-      {!dateInFocus
-        ? classDetails.retrievedTimetable.map(timetable => (
-            <Timetable
-              key={timetable.id}
-              onClick={() => handleDateInfocus(timetable)}
-              // onClick={() => console.log(timetable)}
-            >
-              <p>Class Date: {timetable.date}</p>
-              <p>Class no: {timetable.class_number}</p>
-              <p>Class Status: {timetable.class_status}</p>
-            </Timetable>
-          ))
-        : // : dateInFocus.map(item => <div>{item.date}</div>)}
-          console.log(dateInFocus)}
+      {!dateInFocus ? (
+        classDetails.retrievedTimetable.map(timetable => (
+          <Timetable
+            key={timetable.id}
+            onClick={() => handleDateInfocus(timetable)}
+          >
+            <p>Class Date: {timetable.date}</p>
+            <p>Class no: {timetable.class_number}</p>
+            <p>Class Status: {timetable.class_status}</p>
+          </Timetable>
+        ))
+      ) : (
+        <>
+          <ClassDateSubHeader>
+            <span>{dateInFocus.date}</span>
+            <span>Class #{dateInFocus.class_number}</span>
+            <span>{dateInFocus.class_status}</span>
+            {console.log(studentsObjectArray)}
+          </ClassDateSubHeader>
+
+          {studentsObjectArray.map(
+            item =>
+              item.status === 'active' && (
+                <Timetable>
+                  <p>{item.name}</p>
+                  {/* <p>{item.status}</p> */}
+                  <p>Presence {item.present ? 'Present' : 'Absent'}</p>
+                  <p>Homework {item.homework ? 'done' : 'pending'}</p>
+                </Timetable>
+              ),
+          )}
+        </>
+      )}
     </Modal>
   );
 };

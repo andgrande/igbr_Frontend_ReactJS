@@ -15,6 +15,22 @@ export const Timetable = styled.div`
   border-radius: 1rem;
 `;
 
+export const ClassDateSubHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-left: 2rem;
+  margin-bottom: 0.5rem;
+
+  span {
+    padding: 1rem;
+    background-color: var(--light);
+    border-radius: 1rem;
+  }
+`;
+
 export const ModalHeader = styled.section`
   display: flex;
   flex-direction: row;

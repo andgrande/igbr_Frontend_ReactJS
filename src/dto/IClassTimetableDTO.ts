@@ -1,4 +1,4 @@
-export default interface ClassTimetableDTO {
+export interface ClassTimetableDTO {
   id: string;
   class_id: string;
   class_status: string;
@@ -12,4 +12,11 @@ export default interface ClassTimetableDTO {
     };
   };
   class_number: number;
+}
+
+export interface StudentsTimetableDTO {
+  name: string;
+  present: boolean | null;
+  homework: boolean | null;
+  status: string;
 }

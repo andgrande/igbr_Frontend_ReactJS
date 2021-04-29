@@ -17,7 +17,7 @@ import {
   ClassDateSubHeader,
 } from './styles';
 
-import IClassDetailsDTO from '../../dto/IClassDetailsDTO';
+import { ClassDetailsDTO } from '../../dto/IClassDetailsDTO';
 import {
   ClassTimetableDTO,
   StudentsTimetableDTO,
@@ -26,7 +26,7 @@ import {
 interface IModalProps {
   isOpen: boolean;
   setIsOpen: () => void;
-  classDetails: IClassDetailsDTO;
+  classDetails: ClassDetailsDTO;
 }
 
 const ModalAddFood: React.FC<IModalProps> = ({

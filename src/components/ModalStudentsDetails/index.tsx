@@ -9,7 +9,7 @@ import Modal from '../Modal';
 
 import { ClassInfo, Timetable } from './styles';
 
-import ClassDetailsDTO from '../../dto/IClassDetailsDTO';
+import { ClassDetailsDTO } from '../../dto/IClassDetailsDTO';
 
 interface IModalProps {
   isOpen: boolean;

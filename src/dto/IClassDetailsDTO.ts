@@ -1,4 +1,6 @@
-export default interface ClassDetailsDTO {
+import { StringMappingType } from 'typescript';
+
+export interface ClassDetailsDTO {
   retrievedClasses: {
     id: string;
     class_id: string;
@@ -41,4 +43,22 @@ export default interface ClassDetailsDTO {
       class_number: number;
     },
   ];
+}
+
+export interface RetrievedTimetableDTO {
+  id: string;
+  class_id: string;
+  class_status: string;
+  date: Date;
+  formattedDate?: string;
+  class_number: number;
+  updated_at: Date;
+  students_presence: {
+    string: {
+      name: string;
+      present: boolean | null;
+      homework: boolean | null;
+      status: string;
+    };
+  };
 }

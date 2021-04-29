@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const MainHeader = styled.header`
-  background-color: var(--header);
+  background-color: var(--semi-light);
   height: 7rem;
 
   padding: 1rem;

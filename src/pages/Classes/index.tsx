@@ -7,7 +7,7 @@ import api from '../../services/api';
 import { Header } from '../../components/Header';
 import { Container, Content, ClassList, Class } from './styles';
 
-import ClassDetailsDTO from '../../dto/IClassDetailsDTO';
+import { ClassDetailsDTO } from '../../dto/IClassDetailsDTO';
 
 interface ClassesItems {
   class_id: string;

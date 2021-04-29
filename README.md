@@ -12,11 +12,14 @@
 
 > Classes
 [ ] Create class
+    [ ] Using modal
 [x] List classes
-    [ ] Should be to filter classes ("mostrando resultado para: ...")
-[/] Modal Class Details
+    [ ] Should be able to filter classes ("mostrando resultado para: ...")
+[/] Section Class Details
+    [x] Section should be refreshed after any update
     [ ] Modal Class Date Details
-        [ ] List students
+        [x] Status can be updated
+        [x] List students
         [ ] Should be able to update presence and homework
         [ ] Should be able to update class status
 

@@ -3,11 +3,15 @@ import { createGlobalStyle } from 'styled-components';
 export const GlobalStyle = createGlobalStyle`
     :root {
         --background: #b27a7d;
-        --header: #d4a4a7;
+        --semi-light: #d4a4a7;
         --light: #fae0e2;
+        --trial-light: #F2F3E6;
         --bege: #FDF0E5;
+        --orange: #ff9000;
+        --green: #00c4a2;
 
         --text-title: #232129;
+        --trial-text-title: #343a40;
         --text-body: #3e3b47;
 
         --shape: ;
@@ -36,9 +40,9 @@ export const GlobalStyle = createGlobalStyle`
 
     ::-webkit-scrollbar {
       // Width of vertical scroll bar
-      width: 12px;
+      width: 6px;
       // Height of horizontal scroll bar
-      height: 12px;
+      height: 6px;
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 8px;

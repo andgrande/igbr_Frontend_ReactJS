@@ -20,3 +20,11 @@ export interface StudentsTimetableDTO {
   homework: boolean | null;
   status: string;
 }
+
+export interface TTDTO {
+  id?: string;
+  name: string;
+  present?: boolean | null;
+  homework?: boolean | null;
+  status?: string;
+}

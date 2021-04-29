@@ -1,5 +1,6 @@
 import React from 'react';
-import { Classes } from './pages/Classes';
+// import { Classes } from './pages/Classes';
+import { Classes } from './pages/Classes_new';
 
 import { GlobalStyle } from './styles/global';
 

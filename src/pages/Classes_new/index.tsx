@@ -7,7 +7,8 @@ import api from '../../services/api';
 
 import { Header } from '../../components/Header';
 import { SubHeader } from '../../components/SubHeader';
-import { Checkbox } from '../../components/Checkbox';
+import { ToggleButton } from '../../components/ToggleButton';
+import { ToggleRectangular } from '../../components/Toggle';
 import {
   Container,
   Content,
@@ -205,17 +206,31 @@ const Classes: React.FC = () => {
       ...(component === 'homework' ? { student_homework: status } : {}),
     };
 
-    await api.patch(`/students/${student.id}/set_status`, {
+    const { data } = await api.patch(`/students/${student.id}/set_status`, {
       class_id: classDate.class_id,
       ...action,
       date: classDate.date,
     });
+
+    setRetrievedTimetable([
+      ...retrievedTimetable.map(item => {
+        const tempItem = { ...item };
+        data.forEach((idx: any) => {
+          if (idx.id === item.id) {
+            tempItem.students_presence = idx.students_presence;
+          }
+        });
+
+        return tempItem;
+      }),
+    ]);
   }
 
   return (
     <Container>
       <Header />
       <SubHeader />
+
       <Content>
         {modalDetails && (
           <ModalClassDetails
@@ -289,7 +304,7 @@ const Classes: React.FC = () => {
                         <ClassDateSubHeaderSpan>
                           Class #{dateInFocus.class_number}
                         </ClassDateSubHeaderSpan>
-                        <ClassDateSubHeaderButton
+                        {/* <ClassDateSubHeaderButton
                           type="button"
                           status={dateInFocus.class_status}
                           onClick={() =>
@@ -302,7 +317,13 @@ const Classes: React.FC = () => {
                           }
                         >
                           <p>{dateInFocus.class_status || '...'}</p>
-                        </ClassDateSubHeaderButton>
+                        </ClassDateSubHeaderButton> */}
+                        <ToggleRectangular
+                          isChecked={dateInFocus.class_status}
+                          componentId="class_status"
+                          dateInFocus={dateInFocus}
+                          setPresence={handleChangeClassStatus}
+                        />
                         <DetailsButtons>
                           <CloseDetailsButton
                             type="button"
@@ -321,7 +342,7 @@ const Classes: React.FC = () => {
                               <p>{item.name}</p>
                               <p>
                                 Presence
-                                <Checkbox
+                                <ToggleButton
                                   componentId="presence"
                                   dateInFocus={dateInFocus}
                                   setPresence={handleSetPresence}
@@ -331,7 +352,7 @@ const Classes: React.FC = () => {
                               </p>
                               <p>
                                 Homework
-                                <Checkbox
+                                <ToggleButton
                                   componentId="homework"
                                   dateInFocus={dateInFocus}
                                   setPresence={handleSetPresence}

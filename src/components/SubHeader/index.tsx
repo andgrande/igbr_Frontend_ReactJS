@@ -7,30 +7,47 @@ import {
   SubHeaderTitle,
   Search,
   SearchTool,
+  SearchButton,
   SearchFields,
 } from './styles';
 
-const SubHeader: React.FC = () => {
+interface ISearchParamsDTO {
+  searchVisible: boolean;
+  openModal(): void;
+}
+
+const SubHeader: React.FC<ISearchParamsDTO> = ({
+  searchVisible,
+  openModal,
+}) => {
   const [isFilterOn, setIsFilterOn] = useState<boolean>(false);
+  const [isSearchVisible, setIsSearchVisible] = useState<boolean>(
+    searchVisible,
+  );
   return (
     <PageSubHeader>
       <Search>
         <SearchTool>
-          <button type="button" onClick={() => console.log()}>
+          <button type="button" onClick={() => openModal()}>
             <span>
               <GrAddCircle />
               Create Class
             </span>
           </button>
-          <button type="button" onClick={() => setIsFilterOn(!isFilterOn)}>
-            <span>
-              <BsSearch />
-              Search Class
-            </span>
-          </button>
+          {isSearchVisible && (
+            <SearchButton
+              type="button"
+              onClick={() => setIsFilterOn(!isFilterOn)}
+            >
+              <span>
+                <BsSearch />
+                Search Class
+              </span>
+            </SearchButton>
+          )}
         </SearchTool>
         {isFilterOn && (
-          <SearchFields hidden={!isFilterOn}>
+          <SearchFields fieldsHidden={!isFilterOn}>
             <span>
               Day
               <input placeholder="filter" />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import ModalClassDetails from '../../components/ModalClassDetails';
+import ModalClassDetails from '../../components/modals/ModalClassDetails';
 
 import api from '../../services/api';
 
@@ -59,7 +59,7 @@ const Classes: React.FC = () => {
           <ModalClassDetails
             isOpen={modalOpen}
             setIsOpen={toggleModal}
-            classDetails={modalDetails}
+            // classDetails={modalDetails}
           />
         )}
         {classes && (

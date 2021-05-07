@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-import ModalClassDetails from '../../components/ModalClassDetails';
+import { ModalCreateClass } from '../../components/modals/ModalCreateClass';
+import { ModalManageStudents } from '../../components/modals/ModalManageStudents';
 
 import api from '../../services/api';
 
@@ -22,7 +23,9 @@ import {
   Timetable,
   ClassDateSubHeader,
   ClassDateSubHeaderSpan,
-  ClassDateSubHeaderButton,
+  ManageStudentsButton,
+  Individuals,
+  ClassStudentSubHeader,
 } from './styles';
 
 import {
@@ -45,22 +48,17 @@ interface ClassesItems {
 const Classes: React.FC = () => {
   const [classes, setClasses] = useState<ClassesItems[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen2, setModalOpen2] = useState(false);
   const [classDetails, setClassDetails] = useState<ClassDetailsDTO | null>(
     null,
   );
   const [retrievedTimetable, setRetrievedTimetable] = useState<
     RetrievedTimetableDTO[]
   >([]);
-  const [modalDetails, setModalDetails] = useState<ClassDetailsDTO | null>(
-    null,
-  );
   const [dateInFocus, setDateInFocus] = useState<ClassTimetableDTO | null>(
     null,
   );
-  const [studentsObjectArray, setStudentsObjectArray] = useState<
-    // StudentsTimetableDTO[]
-    TTDTO[]
-  >([]);
+  const [studentsObjectArray, setStudentsObjectArray] = useState<TTDTO[]>([]);
   const [date, setDate] = useState('');
   const [hour, setHour] = useState(Date);
 
@@ -70,10 +68,6 @@ const Classes: React.FC = () => {
     });
   }, []);
 
-  function toggleModal(): void {
-    setModalOpen(!modalOpen);
-  }
-
   function handleDateTime(timetable: ClassTimetableDTO) {
     setDateInFocus(timetable);
 
@@ -81,47 +75,39 @@ const Classes: React.FC = () => {
     setDate(format(rawDate, 'dd-MM-yyyy', { locale: ptBR }));
     setHour(format(rawDate, 'HH:mm'));
 
-    const objectArray = Object.entries(timetable.students_presence);
+    if (timetable.students_presence) {
+      const objectArray = Object.entries(timetable.students_presence);
 
-    // const newObjectArray = new Array<StudentsTimetableDTO>();
+      const newObjectArray = new Array<TTDTO>();
 
-    const newObjectArray = new Array<TTDTO>();
+      objectArray.forEach(item => {
+        const id = item[0];
+        const arr = item[1];
 
-    objectArray.forEach(item => {
-      const id = item[0];
-      const arr = item[1];
+        newObjectArray.push({ id, ...arr });
+      });
 
-      newObjectArray.push({ id, ...arr });
-    });
+      setStudentsObjectArray(
+        newObjectArray.sort((a, b) => {
+          if (a.name > b.name) {
+            return 1;
+          }
+          if (a.name < b.name) {
+            return -1;
+          }
 
-    // objectArray.forEach(item => newObjectArray.push(item[1]));
-
-    // setStudentsObjectArray([...newObjectArray]);
-    setStudentsObjectArray(
-      newObjectArray.sort((a, b) => {
-        if (a.name > b.name) {
-          return 1;
-        }
-        if (a.name < b.name) {
-          return -1;
-        }
-
-        return 0;
-      }),
-    );
+          return 0;
+        }),
+      );
+    }
   }
 
-  // function handleToggleModal(class_id: string): void {
-  //   api
-  //     .get(`/classes/${class_id}/details`)
-  //     .then(response => setModalDetails(response.data));
-
-  //   toggleModal();
-  // }
-
-  const handleShowClassDetails = useCallback(async class_id => {
+  async function handleShowClassDetails(class_id: string) {
     const { data } = await api.get(`/classes/${class_id}/details`);
-    setDateInFocus(null);
+
+    if (modalOpen2 === false) {
+      setDateInFocus(null);
+    }
 
     setClassDetails(data);
 
@@ -147,17 +133,23 @@ const Classes: React.FC = () => {
         return tempItem;
       }),
     ]);
-  }, []);
+  }
+
+  function toggleModal(): void {
+    setModalOpen(!modalOpen);
+  }
+
+  function toggleModal2(): void {
+    if (classDetails && modalOpen2) {
+      handleShowClassDetails(classDetails.retrievedClasses.id);
+    }
+
+    setModalOpen2(!modalOpen2);
+  }
 
   const handleCloseDetails = useCallback(() => {
     setDateInFocus(null);
   }, []);
-
-  // const getDateTime = useCallback(time => {
-  //   const b = new Date(time);
-
-  //   setDate(`${b.getDate()}-${b.getMonth() + 1}-${b.getFullYear()}`);
-  // }, []);
 
   async function handleChangeClassStatus(
     id: string,
@@ -226,19 +218,43 @@ const Classes: React.FC = () => {
     ]);
   }
 
+  function handleToggleModal(): void {
+    toggleModal();
+  }
+
+  function handleToggleModal2(): void {
+    toggleModal2();
+  }
+
+  function handleManageStudents() {
+    if (classDetails) {
+      alert(
+        classDetails.retrievedClasses.classes_x_students.map(
+          student => student.student_name,
+        ),
+      );
+    }
+  }
+
   return (
     <Container>
       <Header />
-      <SubHeader />
+      <SubHeader searchVisible openModal={handleToggleModal} />
 
       <Content>
-        {modalDetails && (
-          <ModalClassDetails
-            isOpen={modalOpen}
-            setIsOpen={toggleModal}
-            classDetails={modalDetails}
-          />
-        )}
+        <ModalCreateClass
+          isOpen={modalOpen}
+          setIsOpen={toggleModal}
+          showClassDetails={handleShowClassDetails}
+        />
+
+        {/* {modalOpen2 && ( */}
+        <ModalManageStudents
+          isOpen={modalOpen2}
+          setIsOpen={toggleModal2}
+          studentsList={classDetails}
+        />
+        {/* )} */}
         {classes && (
           <>
             <ClassList>
@@ -277,24 +293,37 @@ const Classes: React.FC = () => {
 
                   <h4>Teacher</h4>
                   <ClassInfo>
-                    <p>
-                      Teacher name:{' '}
-                      {classDetails.retrievedClasses.teacher.teacher_name}
-                    </p>
-                    <p>
-                      Teacher email:{' '}
-                      {classDetails.retrievedClasses.teacher.teacher_email}
-                    </p>
+                    <Individuals>
+                      <p>
+                        Teacher name:{' '}
+                        {classDetails.retrievedClasses.teacher.teacher_name}
+                      </p>
+                      <p>
+                        Teacher email:{' '}
+                        {classDetails.retrievedClasses.teacher.teacher_email}
+                      </p>
+                    </Individuals>
                   </ClassInfo>
 
-                  <h4>Students</h4>
+                  <ClassStudentSubHeader>
+                    <h4>Students</h4>
+                    <ManageStudentsButton
+                      type="button"
+                      onClick={() => handleToggleModal2()}
+                    >
+                      <p className="text">Manage students</p>
+                    </ManageStudentsButton>
+                  </ClassStudentSubHeader>
                   <ClassInfo>
-                    {classDetails.retrievedClasses.classes_x_students.map(
-                      student => (
-                        <p key={student.id}>{student.student_name}</p>
-                      ),
-                    )}
+                    <Individuals>
+                      {classDetails.retrievedClasses.classes_x_students.map(
+                        student => (
+                          <p key={student.id}>{student.student_name}</p>
+                        ),
+                      )}
+                    </Individuals>
                   </ClassInfo>
+
                   <h4>Class Dates</h4>
                   {dateInFocus ? (
                     <>
@@ -304,20 +333,7 @@ const Classes: React.FC = () => {
                         <ClassDateSubHeaderSpan>
                           Class #{dateInFocus.class_number}
                         </ClassDateSubHeaderSpan>
-                        {/* <ClassDateSubHeaderButton
-                          type="button"
-                          status={dateInFocus.class_status}
-                          onClick={() =>
-                            handleChangeClassStatus(
-                              dateInFocus.id,
-                              dateInFocus.class_id,
-                              dateInFocus.class_status,
-                              dateInFocus.date,
-                            )
-                          }
-                        >
-                          <p>{dateInFocus.class_status || '...'}</p>
-                        </ClassDateSubHeaderButton> */}
+
                         <ToggleRectangular
                           isChecked={dateInFocus.class_status}
                           componentId="class_status"
@@ -327,7 +343,6 @@ const Classes: React.FC = () => {
                         <DetailsButtons>
                           <CloseDetailsButton
                             type="button"
-                            data-testid="add-food-button"
                             onClick={() => handleCloseDetails()}
                           >
                             <p className="text">Close details</p>
@@ -365,7 +380,7 @@ const Classes: React.FC = () => {
                       )}
                     </>
                   ) : (
-                    retrievedTimetable.length > 1 &&
+                    retrievedTimetable.length > 0 &&
                     retrievedTimetable.map(timetable => (
                       <Timetable
                         key={timetable.id}

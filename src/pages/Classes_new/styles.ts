@@ -134,6 +134,18 @@ export const DetailsButtons = styled.section`
   align-content: center;
 `;
 
+export const ManageStudentsButton = styled.button`
+  display: flex;
+  /* justify-content: right; */
+  align-items: center;
+  height: 4rem;
+  width: 6rem;
+  background-color: var(--header);
+  border-radius: 1rem;
+  border-width: 1px;
+  opacity: 1;
+`;
+
 export const CloseDetailsButton = styled.button`
   height: 4rem;
   width: 6rem;
@@ -144,12 +156,17 @@ export const CloseDetailsButton = styled.button`
 `;
 
 export const ClassInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
   margin-left: 2rem;
+  margin-bottom: 1em;
   padding: 1rem;
   background-color: var(--light);
   border-radius: 1rem;
   color: var(--text-body);
 `;
+
+export const Individuals = styled.div``;
 
 export const Timetable = styled.div`
   margin-left: 2rem;
@@ -160,14 +177,24 @@ export const Timetable = styled.div`
   color: var(--text-body);
 `;
 
+export const ClassStudentSubHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 0.5em;
+`;
+
 export const ClassDateSubHeader = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 
-  margin-left: 2rem;
-  margin-bottom: 0.5rem;
+  margin: 1em 0 0.5em 2em;
+  /* margin-left: 2rem; */
+  /* margin-bottom: 0.5rem; */
 `;
 
 export const ClassDateSubHeaderSpan = styled.span<ClassStatus>`

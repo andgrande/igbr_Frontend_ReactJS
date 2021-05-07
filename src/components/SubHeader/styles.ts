@@ -1,8 +1,12 @@
 import styled, { css } from 'styled-components';
 
 interface SearchVisibility {
-  hidden: boolean;
+  fieldsHidden: boolean;
 }
+
+// interface SearchButtonVisibility {
+//   buttonHidden: boolean;
+// }
 
 export const PageSubHeader = styled.div`
   display: flex;
@@ -89,7 +93,7 @@ export const SearchFields = styled.span<SearchVisibility>`
   /* transition: hidden 0s linear 300ms, opacity 300ms;
 
   ${props =>
-    props.hidden
+    props.fieldsHidden
       ? css`
           transition: hidden 0s linear 300ms, opacity 300ms;
           background-color: var(--green);
@@ -99,6 +103,8 @@ export const SearchFields = styled.span<SearchVisibility>`
           background-color: #000;
         `} */
 `;
+
+export const SearchButton = styled.button``;
 
 export const ClassList = styled.aside`
   background-color: var(--semi-light);

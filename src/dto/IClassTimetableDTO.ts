@@ -3,7 +3,7 @@ export interface ClassTimetableDTO {
   class_id: string;
   class_status: string;
   date: Date;
-  students_presence: {
+  students_presence?: {
     string: {
       name: string;
       present: boolean | null;

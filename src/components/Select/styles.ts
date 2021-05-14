@@ -49,20 +49,24 @@ export const Container = styled.div<ContainerProps>`
       color: black;
     `}
 
-  input {
-    /* flex: 1; */
-    width: 90%;
-    background: transparent;
-    border: 0;
-    color: black;
-
-    &::placeholder {
-      color: #666360;
-    }
-  }
-
   svg {
     margin-right: 16px;
+  }
+`;
+
+export const SelectField = styled.select`
+  /* flex: 1; */
+  width: 90%;
+  background: transparent;
+  border: 0;
+  color: black;
+
+  :optional {
+    /* color: blue; */
+  }
+
+  &::placeholder {
+    color: #666360;
   }
 `;
 

@@ -254,7 +254,6 @@ const Classes: React.FC = () => {
           setIsOpen={toggleModal2}
           studentsList={classDetails}
         />
-        {/* )} */}
         {classes && (
           <>
             <ClassList>
@@ -384,6 +383,7 @@ const Classes: React.FC = () => {
                     retrievedTimetable.map(timetable => (
                       <Timetable
                         key={timetable.id}
+                        status={timetable.class_status}
                         onClick={() => handleDateTime(timetable)}
                       >
                         <p>Class Date: {timetable.formattedDate}</p>

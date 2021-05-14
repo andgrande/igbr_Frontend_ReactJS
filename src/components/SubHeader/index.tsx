@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
+import { FormHandles } from '@unform/core';
+import { Form } from '@unform/web';
 import { BsSearch } from 'react-icons/bs';
 import { GrAddCircle } from 'react-icons/gr';
+
+import Input from '../Input';
+import Button from '../Button';
 
 import {
   PageSubHeader,
@@ -20,10 +25,33 @@ const SubHeader: React.FC<ISearchParamsDTO> = ({
   searchVisible,
   openModal,
 }) => {
+  const formRef = useRef<FormHandles>(null);
   const [isFilterOn, setIsFilterOn] = useState<boolean>(false);
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(
     searchVisible,
   );
+
+  const handleSubmit = useCallback(async data => {
+    try {
+      formRef.current?.setErrors({});
+
+      // const response = await api.post('/classes', {
+      //   class_day: data.class_day,
+      //   class_level: data.class_level,
+      //   class_hour: data.class_hour,
+      //   class_duration: data.class_duration,
+      //   weeks_duration: data.weeks_duration,
+      //   start_date: data.start_date,
+      //   teacher_id: data.teacher_id,
+
+      console.log(data);
+
+      // });
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
   return (
     <PageSubHeader>
       <Search>
@@ -48,30 +76,34 @@ const SubHeader: React.FC<ISearchParamsDTO> = ({
         </SearchTool>
         {isFilterOn && (
           <SearchFields fieldsHidden={!isFilterOn}>
-            <span>
-              Day
-              <input placeholder="filter" />
-            </span>
+            <form>
+              <span>
+                Day
+                <input name="day" placeholder="filter" />
+              </span>
 
-            <span>
-              Hour
-              <input placeholder="filter" />
-            </span>
+              <span>
+                Hour
+                <input name="hour" placeholder="filter" />
+              </span>
 
-            <span>
-              Code
-              <input placeholder="filter" />
-            </span>
+              <span>
+                Code
+                <input name="code" placeholder="filter" />
+              </span>
 
-            <span>
-              Level
-              <input placeholder="filter" />
-            </span>
+              <span>
+                Level
+                <input name="level" placeholder="filter" />
+              </span>
 
-            <span>
-              Teacher
-              <input placeholder="filter" />
-            </span>
+              <span>
+                Teacher
+                <input name="teacher" placeholder="filter" />
+              </span>
+
+              <button type="submit">Search</button>
+            </form>
           </SearchFields>
         )}
       </Search>

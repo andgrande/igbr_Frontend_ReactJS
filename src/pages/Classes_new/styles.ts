@@ -4,6 +4,10 @@ interface ClassStatus {
   status?: 'given | pending' | null | undefined | string;
 }
 
+interface ClassGiven {
+  status?: 'given | pending' | null | undefined | string;
+}
+
 export const Container = styled.div``;
 
 export const Content = styled.div`
@@ -168,13 +172,19 @@ export const ClassInfo = styled.div`
 
 export const Individuals = styled.div``;
 
-export const Timetable = styled.div`
+export const Timetable = styled.div<ClassGiven>`
   margin-left: 2rem;
   margin-bottom: 0.5rem;
   padding: 1rem;
   background-color: var(--light);
   border-radius: 1rem;
   color: var(--text-body);
+
+  ${props =>
+    props.status === 'given' &&
+    css`
+      background-color: var(--green);
+    `}
 `;
 
 export const ClassStudentSubHeader = styled.div`

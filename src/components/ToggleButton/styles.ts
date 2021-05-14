@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import negative from '../../assets/thumbs-down.svg';
-import positive from '../../assets/thumbs-up.svg';
+// import negative from '../../assets/thumbs-down.svg';
+// import positive from '../../assets/thumbs-up.svg';
 import wrong from '../../assets/wrong.svg';
 import done from '../../assets/done.svg';
 

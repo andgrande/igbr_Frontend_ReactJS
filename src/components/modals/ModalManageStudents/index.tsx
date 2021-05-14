@@ -48,7 +48,7 @@ const ModalManageStudents: React.FC<IModalProps> = ({
   const mainClassId = studentsList?.retrievedClasses.id;
   const mainClassCode = studentsList?.retrievedClasses.class_id;
 
-  function refreshData() {
+  const refreshData = useCallback(() => {
     const ids = studentsList?.retrievedClasses.classes_x_students.map(
       item => item.student_id,
     );
@@ -62,7 +62,7 @@ const ModalManageStudents: React.FC<IModalProps> = ({
 
     setFilteredStudentsList(nugget);
     setFullStudentsList(nugget);
-  }
+  }, []);
 
   useEffect(() => {
     setStudents(studentsList);
@@ -99,16 +99,14 @@ const ModalManageStudents: React.FC<IModalProps> = ({
           idx => idx.student_id === id,
         );
 
-        // console.log(data);
-        const a = students;
-        a.retrievedClasses.classes_x_students.splice(index, 1);
+        const splicedArr = students;
+        splicedArr.retrievedClasses.classes_x_students.splice(index, 1);
 
-        // students.retrievedClasses.classes_x_students.splice(index, 1);
-        setStudents({ ...a });
+        setStudents({ ...splicedArr });
         // refreshData();
       }
     },
-    [mainClassCode, students, refreshData],
+    [mainClassCode, students],
   );
 
   const handleAddStudent = useCallback(
@@ -120,37 +118,35 @@ const ModalManageStudents: React.FC<IModalProps> = ({
 
       if (
         // shouldProceed &&
-        students &&
-        fullStudentsList &&
-        filteredStudentsList
+        students
+        // &&
+        // fullStudentsList &&
+        // filteredStudentsList
       ) {
-        const { data } = await api.patch(`students/${id}`, {
-          class_id: mainClassId,
-        });
-        // console.log(data);
-        // let index = fullStudentsList.findIndex(idx => idx.id === id);
-        // fullStudentsList.splice(index, 1);
-        // setFullStudentsList({ ...fullStudentsList });
+        const studentAlreadyExist = students.retrievedClasses.classes_x_students.find(
+          item => item.student_id === id,
+        );
 
-        // index = filteredStudentsList.findIndex(idx => idx.id === id);
-        // const tempArray = filteredStudentsList;
-        // tempArray.splice(index, 1);
-        // setFilteredStudentsList({ ...tempArray });
+        if (studentAlreadyExist) {
+          console.log('Already enrolled');
+          return;
+        }
 
-        // refreshData(data.id, data.full_name);
-
-        // do over API?
-        // refresh filter
-        // refresh student list
+        api
+          .patch(`students/${id}`, {
+            class_id: mainClassId,
+          })
+          .then(response => {
+            const tempStudents = students;
+            tempStudents.retrievedClasses.classes_x_students.push(
+              response.data,
+            );
+            setStudents({ ...tempStudents });
+          });
       }
+      // refreshData();
     },
-    [
-      filteredStudentsList,
-      fullStudentsList,
-      mainClassId,
-      // refreshData,
-      students,
-    ],
+    [mainClassId, students],
   );
 
   const filterStudentsList = useCallback(
@@ -198,17 +194,13 @@ const ModalManageStudents: React.FC<IModalProps> = ({
           </EnrolledStudents>
         ))}
 
-      <h4>Add students</h4>
+      <h4>Handle students</h4>
 
       <input
         placeholder="Search student by name"
         value={searchValue}
         onChange={e => filterStudentsList(e.target.value)}
       />
-      {/*
-        button to include in this class with warning for old class
-        refresh class
-      */}
 
       {filteredStudentsList &&
         filteredStudentsList.map(item => (
@@ -218,10 +210,14 @@ const ModalManageStudents: React.FC<IModalProps> = ({
               <p>{item.email}</p>
             </StudentsList>
             <ButtonRegular
-              actionParam="add"
-              onClick={() => handleAddStudent(item.id, item.full_name)}
+              actionParam={item.class_id === mainClassId ? 'remove' : 'add'}
+              onClick={() =>
+                item.class_id === mainClassId
+                  ? handleRemoveStudent(item.id, item.full_name)
+                  : handleAddStudent(item.id, item.full_name)
+              }
             >
-              Add to class
+              {item.class_id === mainClassId ? 'Remove' : 'Add to class'}
             </ButtonRegular>
           </EnrolledStudents>
         ))}

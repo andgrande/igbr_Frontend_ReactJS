@@ -90,6 +90,23 @@ export const SearchFields = styled.span<SearchVisibility>`
   justify-content: center;
   align-items: center;
 
+  form {
+    display: 'flex';
+    flex-wrap: 'wrap';
+    flex-direction: 'column';
+    margin-top: '1em';
+    padding-bottom: '1em';
+    align-items: 'center';
+  }
+
+  input {
+    margin-left: 1em;
+  }
+
+  span {
+    margin-bottom: 0.1em;
+  }
+
   /* transition: hidden 0s linear 300ms, opacity 300ms;
 
   ${props =>

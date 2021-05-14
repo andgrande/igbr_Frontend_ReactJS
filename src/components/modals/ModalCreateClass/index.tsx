@@ -1,5 +1,4 @@
-import React, { useRef, useCallback, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useRef, useCallback, useEffect, useState } from 'react';
 import { BiCalendar, BiTime, BiHourglass, BiAbacus } from 'react-icons/bi';
 import { GiTeacher } from 'react-icons/gi';
 import { FormHandles } from '@unform/core';
@@ -9,14 +8,10 @@ import * as Yup from 'yup';
 import Modal from '../Modal';
 import Input from '../../Input';
 import Button from '../../Button';
+import Select from '../../Select';
 import api from '../../../services/api';
 
-import {
-  ClassInfo,
-  ModalHeader,
-  ModalHeaderButtons,
-  CloseModalButton,
-} from './styles';
+import { ModalHeader, ModalHeaderButtons, CloseModalButton } from './styles';
 
 interface IModalProps {
   isOpen: boolean;
@@ -40,7 +35,25 @@ const ModalCreateClass: React.FC<IModalProps> = ({
   showClassDetails,
 }) => {
   const formRef = useRef<FormHandles>(null);
-  const history = useHistory();
+  const [selectTeacherOptions, setSelectTeacherOptions] = useState<
+    [{ name: string; label: string }]
+  >();
+  const selectClassDay: any = [
+    { name: 'Sunday', label: 'Sunday' },
+    { name: 'Monday', label: 'Monday' },
+    { name: 'Tuesday', label: 'Tuesday' },
+    { name: 'Wednesday', label: 'Wednesday' },
+    { name: 'Thursday', label: 'Thursday' },
+    { name: 'Friday', label: 'Friday' },
+    { name: 'Saturday', label: 'Saturday' },
+  ];
+  const selectClassLevel: any = [
+    { name: 'A1', label: 'Básico 1' },
+    { name: 'A2', label: 'Básico 2' },
+    { name: 'B1', label: 'Intermediário 1' },
+    { name: 'B2', label: 'Intermediário 2' },
+    { name: 'C1', label: 'Avançado' },
+  ];
   const handleCloseModal = useCallback(() => {
     setIsOpen();
   }, [setIsOpen]);
@@ -53,8 +66,21 @@ const ModalCreateClass: React.FC<IModalProps> = ({
     [setIsOpen, showClassDetails],
   );
 
+  useEffect(() => {
+    api.get('/teacher').then(response => {
+      setSelectTeacherOptions(() =>
+        response.data.map((item: { id: string; teacher_name: string }) => {
+          return {
+            name: item.id,
+            label: item.teacher_name,
+          };
+        }),
+      );
+    });
+  }, []);
+
   const handleSubmit = useCallback(
-    async (data: CreateClassFormData) => {
+    async (formData: CreateClassFormData) => {
       try {
         formRef.current?.setErrors({});
 
@@ -68,30 +94,28 @@ const ModalCreateClass: React.FC<IModalProps> = ({
           teacher_id: Yup.string().required('Teacher is mandatory'),
         });
 
-        await schema.validate(data, {
+        await schema.validate(formData, {
           abortEarly: false,
         });
 
-        const response = await api.post('/classes', {
-          class_day: data.class_day,
-          class_level: data.class_level,
-          class_hour: data.class_hour,
-          class_duration: data.class_duration,
-          weeks_duration: data.weeks_duration,
-          start_date: data.start_date,
-          teacher_id: data.teacher_id,
+        const { data } = await api.post('/classes', {
+          class_day: formData.class_day,
+          class_level: formData.class_level,
+          class_hour: formData.class_hour,
+          class_duration: formData.class_duration,
+          weeks_duration: formData.weeks_duration,
+          start_date: formData.start_date,
+          teacher_id: formData.teacher_id,
         });
 
-        handleClassDetails(response.data.createdClass.id);
+        handleClassDetails(data.createdClass.id);
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
-          // const error = getValidationErrors(err);
-          // formRef.current?.setErrors(err);
           console.log('Check error');
         }
       }
     },
-    [history, handleClassDetails],
+    [handleClassDetails],
   );
 
   return (
@@ -123,8 +147,10 @@ const ModalCreateClass: React.FC<IModalProps> = ({
           alignItems: 'center',
         }}
       >
-        <Input name="class_day" icon={BiCalendar} placeholder="Class Day" />
-        <Input name="class_level" icon={BiAbacus} placeholder="Class Level" />
+        {/* <Input name="class_day" icon={BiCalendar} placeholder="Class Day" /> */}
+        <Select name="class_day" icon={BiCalendar} options={selectClassDay} />
+        {/* <Input name="class_level" icon={BiAbacus} placeholder="Class Level" /> */}
+        <Select name="class_level" icon={BiAbacus} options={selectClassLevel} />
         <Input name="class_hour" icon={BiTime} placeholder="Class Hour" />
         <Input
           name="class_duration"
@@ -137,7 +163,12 @@ const ModalCreateClass: React.FC<IModalProps> = ({
           placeholder="Weeks Duration"
         />
         <Input name="start_date" icon={BiCalendar} placeholder="Start Date" />
-        <Input name="teacher_id" icon={GiTeacher} placeholder="Teacher" />
+        {console.log(selectTeacherOptions)}
+        <Select
+          name="teacher_id"
+          icon={GiTeacher}
+          options={selectTeacherOptions}
+        />
         <Button type="submit">Criar classe</Button>
       </Form>
     </Modal>

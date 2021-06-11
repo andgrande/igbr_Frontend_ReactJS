@@ -40,3 +40,18 @@ export const MainHeader = styled.header`
     }
   }
 `;
+
+export const URLs = styled.div`
+  span {
+    text-decoration: none;
+    border: 0rem;
+    margin-left: 1rem;
+
+    color: #ffffff;
+    transition: transform 0.1s;
+
+    :hover {
+      transform: scale(1.1, 1.1);
+    }
+  }
+`;

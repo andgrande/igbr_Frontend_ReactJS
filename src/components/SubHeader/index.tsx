@@ -19,11 +19,15 @@ import {
 interface ISearchParamsDTO {
   searchVisible: boolean;
   openModal(): void;
+  page: string;
+  itemName: string;
 }
 
 const SubHeader: React.FC<ISearchParamsDTO> = ({
   searchVisible,
   openModal,
+  page,
+  itemName,
 }) => {
   const formRef = useRef<FormHandles>(null);
   const [isFilterOn, setIsFilterOn] = useState<boolean>(false);
@@ -59,7 +63,7 @@ const SubHeader: React.FC<ISearchParamsDTO> = ({
           <button type="button" onClick={() => openModal()}>
             <span>
               <GrAddCircle />
-              Create Class
+              Create {itemName}
             </span>
           </button>
           {isSearchVisible && (
@@ -69,7 +73,7 @@ const SubHeader: React.FC<ISearchParamsDTO> = ({
             >
               <span>
                 <BsSearch />
-                Search Class
+                Search {itemName}
               </span>
             </SearchButton>
           )}
@@ -108,7 +112,7 @@ const SubHeader: React.FC<ISearchParamsDTO> = ({
         )}
       </Search>
 
-      <SubHeaderTitle>Classes</SubHeaderTitle>
+      <SubHeaderTitle>{page}</SubHeaderTitle>
     </PageSubHeader>
   );
 };

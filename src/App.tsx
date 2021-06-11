@@ -1,15 +1,17 @@
 import React from 'react';
-// import { Classes } from './pages/Classes';
-import { Classes } from './pages/Classes_new';
+import { BrowserRouter } from 'react-router-dom';
+
+import Routes from './routes';
 
 import { GlobalStyle } from './styles/global';
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+    // <div className="App">
+    <BrowserRouter>
+      <Routes />
       <GlobalStyle />
-      <Classes />
-    </div>
+    </BrowserRouter>
   );
 };
 

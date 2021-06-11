@@ -45,7 +45,7 @@ interface ClassesItems {
     };
 }
 
-const Classes: React.FC = () => {
+const Students: React.FC = () => {
     const [classes, setClasses] = useState<ClassesItems[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpen2, setModalOpen2] = useState(false);
@@ -242,8 +242,8 @@ const Classes: React.FC = () => {
             <SubHeader
                 searchVisible
                 openModal={handleToggleModal}
-                page="Classes"
-                itemName="Class"
+                page="Students"
+                itemName="Student"
             />
 
             <Content>
@@ -478,4 +478,4 @@ const Classes: React.FC = () => {
     );
 };
 
-export { Classes };
+export { Students };

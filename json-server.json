@@ -1,0 +1,9 @@
+{
+  "users": [
+    { "id": 1, "email": "abc@abc.com", "password": "qwerty" },
+    { "id": 2, "email": "def@abc.com", "password": "qwerty" },
+    { "id": 3, "email": "ghi@abc.com", "password": "qwerty" }
+  ],
+  "students": {},
+  "classes": {}
+}

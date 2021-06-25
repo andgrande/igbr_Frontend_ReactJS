@@ -5,7 +5,7 @@ import {
   RouteProps as RouterDOMProps,
 } from 'react-router-dom';
 
-// import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/authContext';
 
 interface RouteProps extends RouterDOMProps {
   isPrivate?: boolean;
@@ -13,31 +13,27 @@ interface RouteProps extends RouterDOMProps {
 }
 
 const Route: React.FC<RouteProps> = ({
-  // isPrivate = false,
+  isPrivate = false,
   component: Component,
   ...rest
 }) => {
-  // const { user } = useAuth();
+  const { user } = useAuth();
 
   return (
     <RouteDOM
       {...rest}
-      render={
-        () => {
-          return <Component />;
-        }
-
-        // return isPrivate === !!user ? (
-        //   <Component />
-        // ) : (
-        //   <Redirect
-        //     to={{
-        //       pathname: isPrivate ? '/' : '/dashboard',
-        //       state: { from: location },
-        //     }}
-        //   />
-        // );
-      }
+      render={({ location }) => {
+        return isPrivate === !!user ? (
+          <Component />
+        ) : (
+          <Redirect
+            to={{
+              pathname: isPrivate ? '/' : '/classes',
+              state: { from: location },
+            }}
+          />
+        );
+      }}
     />
   );
 };

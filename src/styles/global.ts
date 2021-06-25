@@ -1,8 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const GlobalStyle = createGlobalStyle`
     :root {
         --background: #b27a7d;
+        --dark-background: #893939;
         --semi-light: #d4a4a7;
         --light: #fae0e2;
         --trial-light: #F2F3E6;

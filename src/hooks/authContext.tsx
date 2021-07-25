@@ -43,25 +43,25 @@ export const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(async ({ email, password }: SignInCredentials) => {
-    const { data } = await api_mock.get(`/users`);
+    try {
+      const { data } = await api_mock.get(`/users`);
 
-    const users = [...data];
-    const token = 'qwertyuioplkjhjkghsdfazxcvvbnmQ';
-
-    const userExists = users.find(
-      item => item.email === email && item.password === password,
-    );
-
-    if (!userExists) {
-      toast.error('Invalid Credentials !');
-      return;
+      const users = [...data];
+      const token = 'qwertyuioplkjhjkghsdfazxcvvbnmQ';
+      const userExists = users.find(
+        item => item.email === email && item.password === password,
+      );
+      if (!userExists) {
+        toast.error('Invalid Credentials !');
+        return;
+      }
+      toast.success('Logged in successfully!');
+      localStorage.setItem('@IGBR:user', JSON.stringify(userExists));
+      localStorage.setItem('@IGBR:token', token);
+      setCredentialData({ user: userExists, token });
+    } catch (err) {
+      toast.error(`${err.message}`);
     }
-
-    toast.success('Logged in successfully!');
-    localStorage.setItem('@IGBR:user', JSON.stringify(userExists));
-    localStorage.setItem('@IGBR:token', token);
-
-    setCredentialData({ user: userExists, token });
   }, []);
 
   const signOut = useCallback(() => {

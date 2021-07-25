@@ -48,10 +48,11 @@ export const AuthProvider: React.FC = ({ children }) => {
     const users = [...data];
     const token = 'qwertyuioplkjhjkghsdfazxcvvbnmQ';
 
-    const userExists = users.find(item => item.email === email);
+    const userExists = users.find(
+      item => item.email === email && item.password === password,
+    );
 
     if (!userExists) {
-      console.log('hi');
       toast.error('Invalid Credentials !');
       return;
     }

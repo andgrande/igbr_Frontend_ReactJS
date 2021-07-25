@@ -37,6 +37,7 @@ const SignIn: React.FC = () => {
                         onChange={e => setEmail(e.target.value)}
                     />
                     <input
+                        type="password"
                         placeholder="Password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}

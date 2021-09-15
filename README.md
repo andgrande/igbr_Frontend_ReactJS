@@ -19,36 +19,36 @@ Project under development
 ## Features ready
 
 > Classes
-[x] Create class
-  [x] Using modal
-  [x] After created, offer option to display created class - create function to allow setting all data and unset the modal
-  [x] Fields with dropdown options
-[x] Filter and List classes
-[x] Section Class Details
-  [x] Section should be refreshed after any update
-    [x] Option to manage students in this class
-      [x] Search students by name
-      [x] show if student is already in another class - alert to confirm if his class should be changed
-  [x] Modal Class Date Details
-    [x] Status can be updated
-    [x] List students
-    [x] Should be able to update presence and homework
-    [x] Should be able to update class status
+- [x] Create class
+  - [x] Using modal
+  - [x] After created, offer option to display created class - create function to allow setting all data and unset the modal
+  - [x] Fields with dropdown options
+- [x] Filter and List classes
+- [x] Section Class Details
+  - [x] Section should be refreshed after any update
+    - [x] Option to manage students in this class
+      - [x] Search students by name
+      - [x] show if student is already in another class - alert to confirm if his class should be changed
+  - [x] Modal Class Date Details
+    - [x] Status can be updated
+    - [x] List students
+    - [x] Should be able to update presence and homework
+    - [x] Should be able to update class status
 
 ## Pending Features
 
 > Students
-[ ] Create student
-[ ] Filter and List students
-[ ] Modal Student Details
-  [ ] Show student data
-  [ ] Allow changes on student data
-  [ ] List classes timetables
-    [ ] Allow update presence and homework
+- [ ] Create student
+- [ ] Filter and List students
+- [ ] Modal Student Details
+  - [ ] Show student data
+  - [ ] Allow changes on student data
+  - [ ] List classes timetables
+    - [ ] Allow update presence and homework
 
 > Teacher
-[ ] Create class
-[ ] List classes
+- [ ] Create class
+- [ ] List classes
 
 
 ## List of pages

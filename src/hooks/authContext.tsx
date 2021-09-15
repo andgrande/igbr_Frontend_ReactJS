@@ -3,8 +3,7 @@ import { useContext } from 'react';
 import { useState } from 'react';
 
 import { toast } from 'react-toastify';
-
-import api_mock from '../services/api_mock';
+import api from '../services/api';
 
 interface SignInCredentials {
   email: string;
@@ -44,13 +43,14 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const signIn = useCallback(async ({ email, password }: SignInCredentials) => {
     try {
-      const { data } = await api_mock.get(`/users`);
+      const { data } = await api.post(`/teacher/sessions`, {
+        teacher_email: email,
+        password,
+      });
 
-      const users = [...data];
+      const userExists = data;
       const token = 'qwertyuioplkjhjkghsdfazxcvvbnmQ';
-      const userExists = users.find(
-        item => item.email === email && item.password === password,
-      );
+
       if (!userExists) {
         toast.error('Invalid Credentials !');
         return;

@@ -53,6 +53,7 @@ const ModalManageStudents: React.FC<IModalProps> = ({
       item => item.student_id,
     );
 
+    console.log(fullStudentsList);
     const nugget = fullStudentsList?.filter(item => {
       if (ids?.includes(item.id)) {
         return false;
@@ -70,7 +71,7 @@ const ModalManageStudents: React.FC<IModalProps> = ({
       setFullStudentsList([...response.data]);
     });
     refreshData();
-  }, [studentsList]);
+  }, [refreshData, studentsList]);
 
   const handleCloseModal = useCallback(() => {
     setIsOpen();
